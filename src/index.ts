@@ -21,7 +21,7 @@ if (hasFlag('--version', '-v')) {
 }
 
 if (hasFlag('--help-lite')) {
-  console.log(`Usage: kode [options] [command] [prompt]\n\n` +
+  console.log(`Usage: hgctl [options] [command] [prompt]\n\n` +
     `Common options:\n` +
     `  -h, --help           Show full help\n` +
     `  -v, --version        Show version\n` +

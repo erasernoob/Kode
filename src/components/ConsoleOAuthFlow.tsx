@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import { Static, Box, Text, useInput } from 'ink'
-import TextInput from './TextInput'
-import { OAuthService, createAndStoreApiKey } from '../services/oauth'
-import { getTheme } from '../utils/theme'
-import { AsciiLogo } from './AsciiLogo'
+import { Box, Static, Text, useInput } from 'ink'
+import React, { useCallback, useEffect, useState } from 'react'
+import { PRODUCT_NAME } from '../constants/product'
 import { useTerminalSize } from '../hooks/useTerminalSize'
+import { sendNotification } from '../services/notifier'
+import { OAuthService, createAndStoreApiKey } from '../services/oauth'
 import { logError } from '../utils/log'
 import { clearTerminal } from '../utils/terminal'
-import { SimpleSpinner } from './Spinner'
+import { getTheme } from '../utils/theme'
+import { AsciiLogo } from './AsciiLogo'
 import { WelcomeBox } from './Onboarding'
-import { PRODUCT_NAME } from '../constants/product'
-import { sendNotification } from '../services/notifier'
+import { SimpleSpinner } from './Spinner'
+import TextInput from './TextInput'
 
 type Props = {
   onDone(): void
@@ -24,10 +24,10 @@ type OAuthStatus =
   | { state: 'about_to_retry'; nextState: OAuthStatus }
   | { state: 'success'; apiKey: string }
   | {
-      state: 'error'
-      message: string
-      toRetry?: OAuthStatus
-    }
+    state: 'error'
+    message: string
+    toRetry?: OAuthStatus
+  }
 
 const PASTE_HERE_MSG = 'Paste code here if prompted > '
 
@@ -69,10 +69,10 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
   useInput(async (_, key) => {
     if (key.return) {
       if (oauthStatus.state === 'idle') {
-        
+
         setOAuthStatus({ state: 'ready_to_start' })
       } else if (oauthStatus.state === 'success') {
-        
+
         await clearTerminal() // needed to clear out Static components
         onDone()
       } else if (oauthStatus.state === 'error' && oauthStatus.toRetry) {
@@ -100,7 +100,7 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
       }
 
       // Track which path the user is taking (manual code entry)
-      
+
       oauthService.processCallback({
         authorizationCode,
         state,
@@ -132,7 +132,7 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
                 'Failed to exchange authorization code for access token. Please try again.',
               toRetry: { state: 'ready_to_start' },
             })
-            
+
           } else {
             // Handle other errors
             setOAuthStatus({
@@ -153,14 +153,14 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
             message: 'Failed to create API key: ' + err.message,
             toRetry: { state: 'ready_to_start' },
           })
-          
+
           throw err
         },
       )
 
       if (apiKey) {
         setOAuthStatus({ state: 'success', apiKey })
-        sendNotification({ message: 'Kode login successful' })
+        sendNotification({ message: 'hgctl login successful' })
       } else {
         setOAuthStatus({
           state: 'error',
@@ -168,7 +168,7 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
             "Unable to create API key. The server accepted the request but didn't return a key.",
           toRetry: { state: 'ready_to_start' },
         })
-        
+
       }
     } catch (err) {
       const errorMessage = (err as Error).message
@@ -240,7 +240,7 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
           <Box flexDirection="column" gap={1}>
             <Box>
               <SimpleSpinner />
-              <Text>Creating API key for Kode…</Text>
+              <Text>Creating API key for hgctl…</Text>
             </Box>
           </Box>
         )
@@ -311,7 +311,7 @@ export function ConsoleOAuthFlow({ onDone }: Props): React.ReactNode {
   }
   return (
     <Box flexDirection="column" gap={1}>
-      <Static 
+      <Static
         items={Object.keys(staticItems)}
         children={(item: string) => staticItems[item]}
       />
