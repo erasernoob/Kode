@@ -1,13 +1,12 @@
-import { Box, Text, Newline } from 'ink'
+import { Box, Text } from 'ink'
 import * as React from 'react'
-import { getTheme } from '../utils/theme'
-import { PRODUCT_NAME } from '../constants/product'
-import { getAnthropicApiKey, getGlobalConfig } from '../utils/config'
-import { getCwd } from '../utils/state'
-import { AsciiLogo } from './AsciiLogo'
-import type { WrappedClient } from '../services/mcpClient'
-import { getModelManager } from '../utils/model'
 import { MACRO } from '../constants/macros'
+import { PRODUCT_NAME } from '../constants/product'
+import type { WrappedClient } from '../services/mcpClient'
+import { getAnthropicApiKey, getGlobalConfig } from '../utils/config'
+import { getModelManager } from '../utils/model'
+import { getCwd } from '../utils/state'
+import { getTheme } from '../utils/theme'
 
 export const MIN_LOGO_WIDTH = 50
 
@@ -37,9 +36,9 @@ export function Logo({
   const apiKey = getAnthropicApiKey()
   const hasOverrides = Boolean(
     process.env.ANTHROPIC_API_KEY ||
-      process.env.DISABLE_PROMPT_CACHING ||
-      process.env.API_TIMEOUT_MS ||
-      process.env.MAX_THINKING_TOKENS,
+    process.env.DISABLE_PROMPT_CACHING ||
+    process.env.API_TIMEOUT_MS ||
+    process.env.MAX_THINKING_TOKENS,
   )
 
   return (
@@ -56,11 +55,11 @@ export function Logo({
         {updateBannerVersion ? (
           <Box flexDirection="column">
             <Text color="yellow">New version available: {updateBannerVersion} (current: {MACRO.VERSION})</Text>
-            <Text>Run the following command to update:</Text>
-            <Text>
-              {'  '}
-              {updateBannerCommands?.[1] ?? DEFAULT_UPDATE_COMMANDS[1]}
-            </Text>
+            {/* <Text>Run the following command to update:</Text> */}
+            {/* <Text> */}
+            {/* {'  '} */}
+            {/* {updateBannerCommands?.[1] ?? DEFAULT_UPDATE_COMMANDS[1]} */}
+            {/* </Text> */}
             {process.platform !== 'win32' && (
               <Text dimColor>
                 Note: you may need to prefix with "sudo" on macOS/Linux.
